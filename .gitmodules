@@ -1,0 +1,3 @@
+[submodule "CPKLinkedOpenDataLinker"]
+	path = CPKLinkedOpenDataLinker
+	url = https://github.com/KNOT-FIT-BUT/CPKLinkedOpenDataLinker.git
