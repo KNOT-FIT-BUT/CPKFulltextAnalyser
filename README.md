@@ -9,7 +9,7 @@ Pro správnou funkčnost je nutné doinstalovat následující závislosti:
 * pattern
 * swig
 
-Pro instalaci je možné použít nástroj pip (pip3). Například takto:
+Pro instalaci je možné použít nástroj pip (pip3), například takto:
 
     pip install numpy
 
