@@ -161,3 +161,36 @@ Vladimír Zicháček	3
 Pavel Marek	3
 ...
 ```
+
+## start.sh
+
+Spouští tvorbu KB z xml souborů autorit z národní knihovny ČR.
+
+Předpokládá se, že stažené xml soubory budou v adresáři records. XML soubory jsou převedeny na tsv pomocí nástroje parseXML.py.
+Poté spouští skript start.sh ve složce kb_creation, který stáhne aktuální verzi KB z wikipedie uloženou na serveru athena3.fit.vutbr.cz a připraví soubory ke sloučení do nové KB.
+Sloučení probíhá pomocí kb_compare.py. Všechny potřebné konfigurace jsou ve složce kb_creation.
+
+Spuštění:
+```
+./start.sh
+```
+
+Výstupní soubor se jmenuje KB.tsv a je umístěn ve složce kb_creation.
+Příklad obsahu:
+```
+p:e25388fde8	person	Atayero Aderemi Aaron-Anthony	Aderemi Aaron-Anthony Atayero		engineer		https://en.wikipedia.org/wiki/Aderemi_Aaron-Anthony_Atayero	https://www.wikidata.org/wiki/Q52423901	http://dbpedia.org/page/AAA_Atayero		Male	1969-10-26						p:Q52423901
+p:58b2aaa0bf	person	A. A. Adams	A. A. Adams	American politician	politician		https://en.wikipedia.org/wiki/A._A._Adams	https://www.wikidata.org/wiki/Q19360456	http://dbpedia.org/page/A._A._Adams	wikimedia/commons/5/52/Representative_A._A._Adams,_1971.jpg	Male	1900-08-22	Bellingham	1985-06-05				p:Q19360456
+p:4cfc3a1811	person	A. A. Allen	A. A. Allen	American evangelist			https://en.wikipedia.org/wiki/A._A._Allen	https://www.wikidata.org/wiki/Q4647456	http://dbpedia.org/page/A._A._Allen		Male	1911-03-27	Sulphur Rock	1970-06-11				p:Q4647456
+p:271f93f45e	person	A. A. Ames	A. A. Ames	American Civil War surgeon, mob boss and politician	military physician|politician		https://en.wikipedia.org/wiki/A._A._Ames	https://www.wikidata.org/wiki/Q4647455	http://dbpedia.org/page/A._A._Ames	wikimedia/commons/6/68/Albert_Alonzo_Ames.jpg	Male	1842-01-18	Garden Prairie	1911-11-16				p:Q4647455
+p:b51d18b551	person	A. Abdul Razzak	A. Abdul Razzak		athletics competitor		https://en.wikipedia.org/wiki/A._Abdul_Razzak	https://www.wikidata.org/wiki/Q45123787	http://dbpedia.org/page/A._Abdul_Razzak		Male	1932-01-01	Baghdad					p:Q45123787
+...
+```
+
+Potřebné konfigurace pro skript kb_compare.py:
+```
+KB_output.conf
+KB_other_output.conf
+NKP.fields
+PERSONS.fields
+```
+
