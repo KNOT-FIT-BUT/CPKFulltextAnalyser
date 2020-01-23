@@ -1,0 +1,10 @@
+*.mrc
+*.ids
+*.cnb
+*.isbn
+*.oclc
+*.xml
+list
+occurences*
+/processed
+/split
