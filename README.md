@@ -164,9 +164,12 @@ Pavel Marek	3
 
 ## start.sh
 
-Spouští tvorbu KB z xml souborů autorit z národní knihovny ČR.
+Spouští přiřazování URL z wikipedie k záznamům národních autorit.
 
-Předpokládá se, že stažené xml soubory budou v adresáři records. XML soubory jsou převedeny na tsv pomocí nástroje parseXML.py.
+Výstupem je tsv soubor se záznamy autorit, doplněnými o URL wikipedie.
+
+Průběh:
+Předpokládá se, že stažené xml soubory národních autorit budou v adresáři records. XML soubory jsou převedeny na tsv pomocí nástroje parseXML.py.
 Poté spouští skript start.sh ve složce kb_creation, který stáhne aktuální verzi KB z wikipedie uloženou na serveru athena3.fit.vutbr.cz a připraví soubory ke sloučení do nové KB.
 Sloučení probíhá pomocí kb_compare.py. Všechny potřebné konfigurace jsou ve složce kb_creation.
 
@@ -175,7 +178,9 @@ Spuštění:
 ./start.sh
 ```
 
-Výstupní soubor se jmenuje KB.tsv a je umístěn ve složce kb_creation.
+Výstupní soubory KB.tsv a entitiesWithAddedWikipediaLink.tsv jsou umístěny ve složce kb_creation.
+Soubor KB.tsv obsahuje celou KB vytvořenou pomocí kb_compare.py.
+Soubor entitiesWithAddedWikipediaLink.tsv obsahuje pouze záznamy, kde se podařilo doplnit URL wikipedie.
 Příklad obsahu:
 ```
 p:e25388fde8	person	Atayero Aderemi Aaron-Anthony	Aderemi Aaron-Anthony Atayero		engineer		https://en.wikipedia.org/wiki/Aderemi_Aaron-Anthony_Atayero	https://www.wikidata.org/wiki/Q52423901	http://dbpedia.org/page/AAA_Atayero		Male	1969-10-26						p:Q52423901
