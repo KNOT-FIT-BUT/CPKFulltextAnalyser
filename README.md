@@ -162,7 +162,7 @@ Pavel Marek	3
 ...
 ```
 
-## start.sh
+## add_wiki_links.sh
 
 Spouští přiřazování URL z wikipedie k záznamům národních autorit.
 
@@ -191,6 +191,29 @@ p:4cfc3a1811	person	A. A. Allen	A. A. Allen	American evangelist			https://en.wik
 p:271f93f45e	person	A. A. Ames	A. A. Ames	American Civil War surgeon, mob boss and politician	military physician|politician		https://en.wikipedia.org/wiki/A._A._Ames	https://www.wikidata.org/wiki/Q4647455	http://dbpedia.org/page/A._A._Ames	wikimedia/commons/6/68/Albert_Alonzo_Ames.jpg	Male	1842-01-18	Garden Prairie	1911-11-16				p:Q4647455
 p:b51d18b551	person	A. Abdul Razzak	A. Abdul Razzak		athletics competitor		https://en.wikipedia.org/wiki/A._Abdul_Razzak	https://www.wikidata.org/wiki/Q45123787	http://dbpedia.org/page/A._Abdul_Razzak		Male	1932-01-01	Baghdad					p:Q45123787
 ...
+```
+
+Názvy jednotlivých sloupců:
+```
+ID
+ENTITY TYPE (vždy "person")
+NAME
+OTHER NAME
+GENERAL NOTE
+ORIGINAL_WIKINAME
+IMAGE
+LINK (url)
+GENDER
+DATE OF BIRTH
+PLACE OF BIRTH
+DATE OF DEATH
+PLACE OF DEATH
+FIELD OF ACTIVITY
+NATIONALITY
+RELATED PLACES
+RELATED COUNTRIES
+NKP ID
+WIKIPEDIA ID
 ```
 
 Potřebné konfigurace pro skript kb_compare.py:
