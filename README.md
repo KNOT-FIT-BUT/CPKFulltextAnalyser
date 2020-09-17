@@ -179,11 +179,13 @@ Spuštění:
 ./start.sh
 ```
 
-Výstupní soubory KB.tsv a entitiesWithAddedWikipediaLink.tsv jsou umístěny ve složce kb_creation.
-Soubor KB.tsv obsahuje celou KB vytvořenou pomocí kb_compare.py.
-Soubor entitiesWithAddedWikipediaLink.tsv obsahuje pouze záznamy, kde se podařilo doplnit URL wikipedie.
+Výstupní soubory KB.tsv, entitiesWithAddedWikipediaLink.tsv, geoKB.tsv a geoEntitiesWithAddedWikipediaLink.tsv jsou umístěny ve složce kb_creation.
+Soubor KB.tsv obsahuje celou KB osob z databáze národních autorit.
+Soubor geoKB.tsv obsahuje KB geografických lokalit z databáze národních autorit.
+KB jsou vytvořeny pomocí kb_compare.py.
+Soubor entitiesWithAddedWikipediaLink.tsv a geoEntitiesWithAddedWikipediaLink.tsv obsahují pouze záznamy, kde se podařilo doplnit URL wikipedie.
 
-Příklad obsahu:
+Příklad obsahu z KB osob:
 ```
 p:e25388fde8	person	Atayero Aderemi Aaron-Anthony	Aderemi Aaron-Anthony Atayero		engineer		https://en.wikipedia.org/wiki/Aderemi_Aaron-Anthony_Atayero	https://www.wikidata.org/wiki/Q52423901	http://dbpedia.org/page/AAA_Atayero		Male	1969-10-26						p:Q52423901
 p:58b2aaa0bf	person	A. A. Adams	A. A. Adams	American politician	politician		https://en.wikipedia.org/wiki/A._A._Adams	https://www.wikidata.org/wiki/Q19360456	http://dbpedia.org/page/A._A._Adams	wikimedia/commons/5/52/Representative_A._A._Adams,_1971.jpg	Male	1900-08-22	Bellingham	1985-06-05				p:Q19360456
@@ -193,7 +195,7 @@ p:b51d18b551	person	A. Abdul Razzak	A. Abdul Razzak		athletics competitor		https
 ...
 ```
 
-Názvy jednotlivých sloupců:
+Názvy jednotlivých sloupců KB osob:
 ```
 ID
 ENTITY TYPE (vždy "person")
@@ -216,12 +218,37 @@ NKP ID
 WIKIPEDIA ID
 ```
 
-Potřebné konfigurace pro skript kb_compare.py:
+Názvy jednotlivých sloupců KB lokalit:
+```
+ID
+ENTITY TYPE (vždy "location")
+NAME
+ALTERNATIVE NAME
+HISTORICAL NAME
+ENGLISH NAME
+GENERAL NOTE
+COORDINATES
+LATITUDE
+LONGITUDE
+LINK (url)
+NKP ID
+WIKIPEDIA ID
+```
+
+Potřebné konfigurace pro skript kb_compare.py, pro tvorbu KB osob:
 ```
 KB_output.conf
 KB_other_output.conf
 NKP.fields
 PERSONS.fields
+```
+
+Konfigurace pro tvorbu KB lokalit:
+```
+geoKB_output.conf
+geoKB_other_output.conf
+GEO.fields
+LOCATIONS.fields
 ```
 
 ## Nástroj pro tvorbu předmětových hesel `subject_heading.py`
