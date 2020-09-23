@@ -235,16 +235,35 @@ NKP ID
 WIKIPEDIA ID
 ```
 
+Tvorba KB osob je rozdělena na 2 části.
+Nejdříve se sloučí osoby z NKP a osoby z wikipedie, které nejsou označené jako umělci.
+Výsledný soubor se jmenuje personsKB.
+Následně jsou do tohoto souboru sloučeni i umělci z wikipedie.
+Výsledkem je KB.tsv, která obsahuje všechny osoby, včetně umělců.
+ 
 Potřebné konfigurace pro skript kb_compare.py, pro tvorbu KB osob:
+Sloučení NKP a osob z wikipedie:
 ```
-KB_output.conf
-KB_other_output.conf
+nkp_persons_rel.conf
+personsKB_output.conf
+personsKB_other_output.conf
 NKP.fields
 PERSONS.fields
 ```
+Sloučení předchozího a umělců z wikipedie:
+```
+nkp_artists_rel.conf
+KB_output.conf
+KB_other_output.conf
+personsKB.fields
+ARTISTS.fields
+```
+
+Tvorba KB geografických lokalit probíhá v jednom kroku, sloučením KB lokalit z NKP a entit typu LOCATION z KB z wikipedie. Výsledkem je geoKB.tsv.
 
 Konfigurace pro tvorbu KB lokalit:
 ```
+nkp_geo_rel.conf
 geoKB_output.conf
 geoKB_other_output.conf
 GEO.fields
