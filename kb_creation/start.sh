@@ -5,17 +5,17 @@
 # Description: automatic kb creation
 
 # get wikipedia KB
-curl -O http://athena3.fit.vutbr.cz/kb/KBstatsMetrics.all || echo "Failed to get KBstatsMetrics.all, old version will be used if already present in comparison folder!" >&2
+curl -o KB_CS_input.tsv http://knot.fit.vutbr.cz/NAKI_CPK/NER_ML_inputs/KB/KB_cs/new/KB.tsv || echo "Failed to get czech KB (KB_CS.tsv), old version will be used if already present in comparison folder!" >&2
 
-if [ -f KBstatsMetrics.all ] && [ -r KBstatsMetrics.all ]; then
+if [ -f KB_CS_input.tsv ] && [ -r KB_CS_input.tsv ]; then
 	# get person entities from kb
-	awk -F'\t' '{ if($2=="person") print }' KBstatsMetrics.all > PERSONS
+	awk -F'\t' '{ if($2=="person") print }' KB_CS_input.tsv > PERSONS
 	# get artists entities from kb
-	awk -F'\t' '{ if($2=="person+artist") print }' KBstatsMetrics.all > ARTISTS
+	awk -F'\t' '{ if($2=="person+artist") print }' KB_CS_input.tsv > ARTISTS
 	# get geographical entities
-	awk -F'\t' '{ if($2=="location") print }' KBstatsMetrics.all > LOCATIONS
+	awk -F'\t' '{ if($2=="geographical") print }' KB_CS_input.tsv > LOCATIONS
 else
-	echo "KBstatsMerics.all is not accessible!" >&2
+	echo "Czech KB is not accessible!" >&2
 	exit 1
 fi
 
@@ -46,7 +46,11 @@ fi
 
 # add artists to person kb
 # output file is KB.tsv
-../CPKLinkedOpenDataLinker/NER/KnowBase/kb_compare.py --first=ARTISTS --second=personsKB --rel_conf=nkp_artists_rel.conf --output_conf=KB_output.conf --output=KB.tsv --id_prefix=p --other_output_conf=KB_other_output.conf --treshold=2
+if [ -f ARTISTS ] && [ -r ARTISTS ] && [ "`wc -l < ARTISTS`" -gt 0 ]; then
+	../CPKLinkedOpenDataLinker/NER/KnowBase/kb_compare.py --first=ARTISTS --second=personsKB --rel_conf=nkp_artists_rel.conf --output_conf=KB_output.conf --output=KB.tsv --id_prefix=p --other_output_conf=KB_other_output.conf --treshold=2
+else
+	mv personsKB KB.tsv
+fi
 
 # create geo kb
 ../CPKLinkedOpenDataLinker/NER/KnowBase/kb_compare.py --first=LOCATIONS --second=GEO --rel_conf=nkp_geo_rel.conf --output_conf=geoKB_output.conf --output=geoKB.tsv --id_prefix=l --other_output_conf=geoKB_other_output.conf --treshold=2
@@ -56,3 +60,7 @@ awk -F'\t' '{ if($18!="" && $19!="") print }' KB.tsv | awk -F'\t' '{ if($8~"http
 
 # Get geo entities with added link
 awk -F'\t' '{ if($12!="" && $13!="") print }' geoKB.tsv | awk -F'\t' '{ if($11~"https?:\/\/.+\.wikipedi(a|e)\.org\/wiki\/.*") print }' > geoEntitiesWithAddedWikipediaLink.tsv
+
+# Print number of entities with added link
+echo "Number of person entities with added wikipedia link: `wc -l < entitiesWithAddedWikipediaLink.tsv`"
+echo "Number of geographical entities with added wikipedia link: `wc -l < geoEntitiesWithAddedWikipediaLink.tsv`"
