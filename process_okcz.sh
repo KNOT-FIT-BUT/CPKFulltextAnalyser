@@ -192,7 +192,7 @@ do
 			print_author "$OPTARG"
 			analyze_book "$OPTARG"
 			;;
-		h)
+		r)
 			rm list
 			rm okcz_toc_preprocessed.xml
 			rm export_*ids*
