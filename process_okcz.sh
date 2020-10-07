@@ -21,16 +21,16 @@ preprocess_data () {
 # Vyhledavani krestnich jmen v zaznamech obalek knih
 
 find_names () {
-	screen -d -m -S occ0 bash -c 'find split -name xx0* grep -o -f names >> occurences0' &
-	screen -d -m -S occ1 bash -c 'find split -name xx1* grep -o -f names >> occurences1' &
-	screen -d -m -S occ2 bash -c 'find split -name xx2* grep -o -f names >> occurences2' &
-	screen -d -m -S occ3 bash -c 'find split -name xx3* grep -o -f names >> occurences3' &
-	screen -d -m -S occ4 bash -c 'find split -name xx4* grep -o -f names >> occurences4' &
-	screen -d -m -S occ5 bash -c 'find split -name xx5* grep -o -f names >> occurences5' &
-	screen -d -m -S occ6 bash -c 'find split -name xx6* grep -o -f names >> occurences6' &
-	screen -d -m -S occ7 bash -c 'find split -name xx7* grep -o -f names >> occurences7' &
-	screen -d -m -S occ8 bash -c 'find split -name xx8* grep -o -f names >> occurences8' &
-	screen -d -m -S occ9 bash -c 'find split -name xx9* grep -o -f names >> occurences9' &
+	screen -d -m -S occ0 bash -c 'find split -name xx0* | xargs grep -o -f names >> occurences0' &
+	screen -d -m -S occ1 bash -c 'find split -name xx1* | xargs grep -o -f names >> occurences1' &
+	screen -d -m -S occ2 bash -c 'find split -name xx2* | xargs grep -o -f names >> occurences2' &
+	screen -d -m -S occ3 bash -c 'find split -name xx3* | xargs grep -o -f names >> occurences3' &
+	screen -d -m -S occ4 bash -c 'find split -name xx4* | xargs grep -o -f names >> occurences4' &
+	screen -d -m -S occ5 bash -c 'find split -name xx5* | xargs grep -o -f names >> occurences5' &
+	screen -d -m -S occ6 bash -c 'find split -name xx6* | xargs grep -o -f names >> occurences6' &
+	screen -d -m -S occ7 bash -c 'find split -name xx7* | xargs grep -o -f names >> occurences7' &
+	screen -d -m -S occ8 bash -c 'find split -name xx8* | xargs grep -o -f names >> occurences8' &
+	screen -d -m -S occ9 bash -c 'find split -name xx9* | xargs grep -o -f names >> occurences9' &
 }
 
 # Zobrazeni zaznamu s nejvyssi cetnosti krestnich jmen
