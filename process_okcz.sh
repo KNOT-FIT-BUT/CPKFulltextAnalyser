@@ -170,7 +170,7 @@ help_function () {
 
 # Hlavni vetev programu
 
-while getopts "pms:ha:" opt
+while getopts "pms:ha:r" opt
 do
 	case "$opt" in
 		p)
@@ -185,12 +185,20 @@ do
 			print_local_ids "$OPTARG"
 			print_records "$OPTARG"
 			;;
+		h)
+			help_function
+			;;
 		a)
 			print_author "$OPTARG"
 			analyze_book "$OPTARG"
 			;;
 		h)
-			help_function
+			rm list
+			rm okcz_toc_preprocessed.xml
+			rm export_*ids*
+			rm occurences*
+			rm -r processed/
+			rm -r split/
 			;;
 		?)
 			help_function
