@@ -45,7 +45,7 @@ Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek kni
        -a FILE_NAME   Vypise nalezena jmena z obsahu knihy.
 ```
 
-Při použití programu je nejprve potřeba předzpracovat všchny vstupní soubory (okcz_toc.xml, export_mzk.mrc a export_nkp.mrc). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
+Při použití programu je nejprve potřeba předzpracovat všechny vstupní soubory (okcz_toc.xml, export_mzk.mrc a export_nkp.mrc). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
 
 Příklad spouštění:
 ```
