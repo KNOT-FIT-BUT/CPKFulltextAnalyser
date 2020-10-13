@@ -18,6 +18,23 @@ preprocess_data () {
 	cat list | while read -r line; do sed -n 's:.*<toc>\(.*\)</toc>.*:\1:p' split/"$line" | sed 's/\\r\\n/\n/g;s/\\n/\n/g' > processed/"$line"; done
 }
 
+# Zpracovani vsech zaznamu z okcz_toc.xml
+
+process_all_data () {
+
+	mkdir final/
+
+	# Zpracovani jednotlivych souboru s parametry -s a -a
+
+	cat list.head | while read -r line; do
+		get_local_ids $line
+		print_ids "$line" > final/"$line"
+		print_records "$line" >> final/"$line"
+		print_author "$line" >> final/"$line"
+		analyze_book "$line" >> final/"$line"
+	done
+}
+
 # Vyhledavani krestnich jmen v zaznamech obalek knih
 
 find_names () {
@@ -116,44 +133,48 @@ get_local_ids () {
 
 # Funkce pro vypis nalezenych lokalnich ID
 
-print_local_ids () {
-	get_local_ids $1
+print_ids () {
+	echo "=== ID zaznamu v souboru okcz_toc.xml ==="
+	BOOK_ID=`grep '<book_id>' split/$1 | sed -e 's/<book_id>\(.*\)<\/book_id>/\1/g'`
+	echo "$BOOK_ID"
 	for KEY in "${!FILE_NAMES[@]}"
 	do
-		echo "$KEY => ${FILE_NAMES[$KEY]}"
+		echo "=== Odpovidajici ID zaznamu v souboru $KEY ==="
+		echo "${FILE_NAMES[$KEY]}"
 	done
 }
 
 # Funkce pro vypis zaznamu ve formatu MARC21 pro dany zaznam z obalek knih
 
 print_records () {
-	get_local_ids $1
 	for KEY in "${!FILE_NAMES[@]}"
 	do
-		echo "=== Vypis zaznamu ze souboru $KEY ==="
+		echo "=== Odpovidajici zaznam v souboru $KEY ==="
 		grep "^${FILE_NAMES[$KEY]}" $KEY
+	done
+}
+
+# Funkce pro vypis jmena autora dane knihy.
+
+print_author () {
+	for KEY in "${!FILE_NAMES[@]}"
+	do	
+		AUTHOR=`grep "^${FILE_NAMES[$KEY]}" $KEY | grep -P "^[^\s]*\s(100)" | sed -e 's/^.*\s100[0-9]\?\s*L\s\$\$a\([[:alpha:] ,]*\)\$\$.*/\1/g' | sed 's/,$//' | sed -e 's/\([[:alpha:]]*\), \([[:alpha:]]*\)/\2 \1/'`
+		if [ ! -z "$AUTHOR" ];
+		then
+			echo "=== Jmeno autora v souboru $KEY ==="
+			echo $AUTHOR
+		fi
 	done
 }
 
 # Funkce pro analyzu obsahu knihy, na vystup vypise nalezena jmena.
 
 analyze_book () {
-	echo "=== Nejcastejsi nalezena jmena v souboru $1 ==="
-	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' | sort -u > tmp_grep
-	grep -E -o -f tmp_grep "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/' | head
-	rm tmp_grep
-}
-
-# Funkce pro vypis jmena autora dane knihy.
-
-print_author () {
-	get_local_ids $1
-	for KEY in "${!FILE_NAMES[@]}"
-	do	
-		echo "=== Heladani autora v souboru $KEY ==="
-		AUTHOR=`grep "^${FILE_NAMES[$KEY]}" $KEY | grep -P "^[^\s]*\s(100)" | sed -e 's/^.*\s100[0-9]\?\s*L\s\$\$a\([[:alpha:] ,]*\)\$\$.*/\1/g' | sed 's/,$//' | sed -e 's/\([[:alpha:]]*\), \([[:alpha:]]*\)/\2 \1/'`
-		echo $AUTHOR
-	done
+	echo "=== Nejvyznamnejsi nalezena jmena ==="
+	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' | sort -u > tmp_grep_$1
+	grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/' | head -n 10
+	rm tmp_grep_$1
 }
 
 # Funkce pro tisk napovedy
@@ -165,12 +186,14 @@ help_function () {
    echo -e "\t-m Vypise seznam nazvu souboru razenych dle cetnosti vyskytu jmen."
    echo -e "\t-s FILE_NAME Vypise MARC21 zaznamy pro dany soubor."
    echo -e "\t-a FILE_NAME Vypise nalezena jmena z obsahu knihy."
+   echo -e "\t-r Smaze docasne predzpracovane soubory."
+   echo -e "\t-x Hromadne zpracovani vsech souboru z okcz_toc.xml."
    exit 1
 }
 
 # Hlavni vetev programu
 
-while getopts "pms:ha:r" opt
+while getopts "pms:ha:rx" opt
 do
 	case "$opt" in
 		p)
@@ -182,13 +205,15 @@ do
 			print_files_with_names
 			;;
 		s)
-			print_local_ids "$OPTARG"
+			get_local_ids "$OPTARG"
+			print_ids "$OPTARG"
 			print_records "$OPTARG"
 			;;
 		h)
 			help_function
 			;;
 		a)
+			get_local_ids "$OPTARG"
 			print_author "$OPTARG"
 			analyze_book "$OPTARG"
 			;;
@@ -199,6 +224,9 @@ do
 			rm occurences*
 			rm -r processed/
 			rm -r split/
+			;;
+		x)
+			process_all_data
 			;;
 		?)
 			help_function
