@@ -163,7 +163,7 @@ print_author () {
 		if [ ! -z "$AUTHOR" ];
 		then
 			echo "=== Jmeno autora v souboru $KEY ==="
-			echo $AUTHOR
+			echo "$AUTHOR"
 		fi
 	done
 }
