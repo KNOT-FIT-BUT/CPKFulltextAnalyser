@@ -26,12 +26,14 @@ process_all_data () {
 
 	# Zpracovani jednotlivych souboru s parametry -s a -a
 
-	cat list.head | while read -r line; do
+	cat list | while read -r line; do
+		declare -A FILE_NAMES
 		get_local_ids $line
 		print_ids "$line" > final/"$line"
 		print_records "$line" >> final/"$line"
 		print_author "$line" >> final/"$line"
 		analyze_book "$line" >> final/"$line"
+		unset FILE_NAMES
 	done
 }
 
@@ -70,10 +72,6 @@ preprocess_ids () {
 	grep -P "^[^\s]*\s035\s" export_mzk.ids | grep "\$\$a" | tr -d '-' | sed -e 's/^\(.*\)\s035\s*L\s\$\$a(OCoLC)\([0-9]*\)\([^0-9].*\|$\)/\1 \2/g' > export_mzk.ids.oclc
 	grep -P "^[^\s]*\s035\s" export_nkp.ids | grep "\$\$a" | tr -d '-' | sed -e 's/^\(.*\)\s035\s*L\s\$\$a(OCoLC)\([0-9]*\)\([^0-9].*\|$\)/\1 \2/g' > export_nkp.ids.oclc
 }
-
-# Promenna pro ukladani nalezenych ID
-
-declare -A FILE_NAMES
 
 # Ziskani lokalnich ID na zaklade CNB, ISBN a OCLC
 
@@ -205,17 +203,21 @@ do
 			print_files_with_names
 			;;
 		s)
+			declare -A FILE_NAMES
 			get_local_ids "$OPTARG"
 			print_ids "$OPTARG"
 			print_records "$OPTARG"
+			unset FILE_NAMES
 			;;
 		h)
 			help_function
 			;;
 		a)
+			declare -A FILE_NAMES
 			get_local_ids "$OPTARG"
 			print_author "$OPTARG"
 			analyze_book "$OPTARG"
+			unset FILE_NAMES
 			;;
 		r)
 			rm list
