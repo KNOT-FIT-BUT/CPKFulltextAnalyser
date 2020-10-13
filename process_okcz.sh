@@ -139,8 +139,8 @@ print_records () {
 
 analyze_book () {
 	echo "=== Nejcastejsi nalezena jmena v souboru $1 ==="
-	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+\)\{1,2\}/g' | sort -u > tmp_grep
-	grep -E -o -f tmp_grep "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] ]*\)/\2\t\1/' | head
+	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' | sort -u > tmp_grep
+	grep -E -o -f tmp_grep "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/' | head
 	rm tmp_grep
 }
 
