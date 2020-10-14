@@ -5,8 +5,13 @@
 preprocess_data () {
 	sed -e 's/^[ \t]*//' okcz_toc.xml > okcz_toc_preprocessed.xml
 
-	mkdir split/
-	mkdir processed/
+	if [ ! -d split/ ]; then
+		mkdir split/
+	fi
+
+	if [ ! -d processed/ ]; then
+		mkdir processed/
+	fi
 
 	# Rozdeleni souboru na casti, kazda obsahuje jednu obalku
 
@@ -22,20 +27,30 @@ preprocess_data () {
 
 process_all_data () {
 
-	mkdir final/
+	if [ ! -d final/ ]; then
+		mkdir final/
+	fi
+
+	# Serazeni seznamu souboru podle poctu nalezenych jmen
+
+	if [ ! -f list.sorted ]; then
+		cut -f1 -d: occurences* | LC_ALL=C sort | LC_ALL=C uniq -c | sort -rn | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]split\/\([[:alnum:] ]*\)/\2/' > list.sorted
+	fi
 
 	# Zpracovani jednotlivych souboru s parametry -s a -a
 
-	cat list | while read -r line; do
-		declare -A FILE_NAMES
-		declare AUTHOR
-		get_local_ids $line
-		print_ids "$line" > final/"$line"
-		print_records "$line" >> final/"$line"
-		print_author "$line" >> final/"$line"
-		analyze_book "$line" >> final/"$line"
-		unset FILE_NAMES
-		unset AUTHOR
+	cat list.sorted | while read -r line; do
+		if [ ! -f final/"$line" ]; then	
+			declare -A FILE_NAMES
+			declare AUTHOR
+			get_local_ids $line
+			print_ids "$line" > final/"$line"
+			print_records "$line" >> final/"$line"
+			print_author "$line" >> final/"$line"
+			analyze_book "$line" >> final/"$line"
+			unset FILE_NAMES
+			unset AUTHOR
+		fi
 	done
 }
 
@@ -225,7 +240,7 @@ do
 			unset AUTHOR
 			;;
 		r)
-			rm list
+			rm list list.sorted
 			rm okcz_toc_preprocessed.xml
 			rm export_*ids*
 			rm occurences*
