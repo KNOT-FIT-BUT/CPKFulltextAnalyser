@@ -178,14 +178,14 @@ analyze_book () {
 # Funkce pro tisk napovedy
 
 help_function () {
-   echo "Usage: $0 [ -h ] [ -p ] [ -m ] [ -s FILE_NAME ] [ -a FILE_NAME]"
+   echo "Usage: $0 [ -h | -p | -m | -s FILE_NAME | -a FILE_NAME | -r | -x]"
    echo -e "\t-h Vypise tuto napovedu."
    echo -e "\t-p Provede predzpracovani dat. Muze trvat nekolik hodin."
    echo -e "\t-m Vypise seznam nazvu souboru razenych dle cetnosti vyskytu jmen."
-   echo -e "\t-s FILE_NAME Vypise MARC21 zaznamy pro dany soubor."
-   echo -e "\t-a FILE_NAME Vypise nalezena jmena z obsahu knihy."
+   echo -e "\t-s FILE_NAME Vypise nalezene MARC21 zaznamy pro zaznam v souboru FILE_NAME."
+   echo -e "\t-a FILE_NAME Vypise nalezena jmena z obsahu knihy pro zaznam v souboru FILE_NAME."
    echo -e "\t-r Smaze docasne predzpracovane soubory."
-   echo -e "\t-x Hromadne zpracovani vsech souboru z okcz_toc.xml."
+   echo -e "\t-x Hromadne zpracovani vsech zaznamu z okcz_toc.xml."
    exit 1
 }
 
