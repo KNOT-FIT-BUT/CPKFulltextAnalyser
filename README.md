@@ -76,7 +76,7 @@ xx50876	881
 ...
 ```
 
-Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů export_mzk.mrc a export_nkp.mrc. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru `okcz_toc.xml` na identifikátory v souborech export_mzk.mrc a export_nkp.mrc není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
+Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů `export_mzk.mrc` a `export_nkp.mrc`. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru `okcz_toc.xml` na identifikátory v souborech `export_mzk.mrc` a `export_nkp.mrc` není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
 
 * `isbn` - marc pole `020` podpole `$a`, v obálkách `<ean13>`
 * `cbn` - marc pole `015` podpole `$a`, v obálkách `<cnb>`
@@ -136,7 +136,7 @@ zpk20142603114 OAI   L $$aNKC01-002603114
 ...
 ```
 
-Při spuštění programu s parametrem `-a` dojde pro danou knihu k vypsání nalezených jmen osob, která jsou doporučena k přidání do knihovnického záznamu. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Ze seznamu jmen jsou automaticky odstraněna jména, která se již v knihovnických záznamech, tedy v souborech export_mzk.mrc a export_nkp.mrc, vyskytují. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uvedeno jméno osoby a ve druhém sloupci její skóre.
+Při spuštění programu s parametrem `-a` dojde pro danou knihu k vypsání nalezených jmen osob, která jsou doporučena k přidání do knihovnického záznamu. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Ze seznamu jmen jsou automaticky odstraněna jména, která se již v knihovnických záznamech, tedy v souborech `export_mzk.mrc` a `export_nkp.mrc`, vyskytují. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uvedeno jméno osoby a ve druhém sloupci její skóre.
 
 Příklad spouštění:
 ```
@@ -157,7 +157,7 @@ David Sane	1
 ...
 ```
 
-Při spuštění programu s parametrem `-x` dojde k hromadnemu zpracování všech záznamů z okcz_toc.xml. Jednotlivé výstupní soubory jsou ukládány do adresáře `final` a de facto obsahují pro každý záznam stejné informace, které se dají získat pomocí přepínačů `-s` a `-a`.
+Při spuštění programu s parametrem `-x` dojde k hromadnemu zpracování všech záznamů z `okcz_toc.xml`. Jednotlivé výstupní soubory jsou ukládány do adresáře `final` a de facto obsahují pro každý záznam stejné informace, které se dají získat pomocí přepínačů `-s` a `-a`.
 
 Příklad spouštění:
 ```
