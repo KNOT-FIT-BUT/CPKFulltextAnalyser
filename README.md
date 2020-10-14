@@ -29,7 +29,7 @@ nebo
 
 ## Nástroj process_okcz.sh
 
-Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek knih. Skript dokáže pro danou obálku najít další autory dané knihy/sborníku (pokud existují). Pro svou funkci vyžaduje přítomnost souborů `okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`. Tyto soubory musí být umístěny ve stejném adresáři jako skript.
+Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek knih. Skript dokáže pro daný z databáze obálek knih najít další významná jména osob (mohou mezi nimi být i další autoři). Pro svou funkci vyžaduje přítomnost souborů `okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`. Tyto soubory musí být umístěny ve stejném adresáři jako skript.
 
 * Soubor **okcz_toc.xml** je XML soubor obsahující data ze serveru obalkyknih.cz.
 * Soubor **export_mzk.mrc** je soubor obsahující záznamy z knihovny MZK ve formátu MARC 21.
