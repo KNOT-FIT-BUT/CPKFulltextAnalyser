@@ -29,30 +29,32 @@ nebo
 
 ## Nástroj process_okcz.sh
 
-Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek knih. Skript dokáže pro danou obálku najít další autory dané knihy/sborníku (pokud existují). Pro svou funkci vyžaduje přítomnost souborů `okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`. Tyto soubory musí být umístěny ve stejném adresáři jako skript.
+Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek knih. Skript dokáže pro daný z databáze obálek knih najít další významná jména osob (mohou mezi nimi být i další autoři). Pro svou funkci vyžaduje přítomnost souborů `okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`. Tyto soubory musí být umístěny ve stejném adresáři jako skript.
 
 * Soubor **okcz_toc.xml** je XML soubor obsahující data ze serveru obalkyknih.cz.
 * Soubor **export_mzk.mrc** je soubor obsahující záznamy z knihovny MZK ve formátu MARC 21.
 * Soubor **export_nkp.mrc** je soubor obsahující záznamy z knihovny NKP ve formátu MARC 21.
 
 ```
- použití: process_okcz.sh [ -h ] [ -p ] [ -m ] [ -s FILE_NAME ] [ -a FILE_NAME]
+ použití: ./process_okcz.sh [ -h | -p | -m | -s FILE_NAME | -a FILE_NAME | -r | -x]
 
-       -h   Vypise tuto napovedu.
-       -p   Provede predzpracovani dat. Muze trvat nekolik hodin.
-       -m   Vypise seznam nazvu souboru razenych dle cetnosti vyskytu jmen.
-       -s FILE_NAME   Vypise MARC21 zaznamy pro dany soubor.
-       -a FILE_NAME   Vypise nalezena jmena z obsahu knihy.
+	-h Vypise tuto napovedu.
+	-p Provede predzpracovani dat. Muze trvat nekolik hodin.
+	-m Vypise seznam nazvu souboru razenych dle cetnosti vyskytu jmen.
+	-s FILE_NAME Vypise nalezene MARC21 zaznamy pro zaznam v souboru FILE_NAME.
+	-a FILE_NAME Vypise nalezena jmena z obsahu knihy pro zaznam v souboru FILE_NAME.
+	-r Smaze docasne predzpracovane soubory.
+	-x Hromadne zpracovani vsech zaznamu z okcz_toc.xml.
 ```
 
-Při použití programu je nejprve potřeba předzpracovat všechny vstupní soubory (okcz_toc.xml, export_mzk.mrc a export_nkp.mrc). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
+Při použití programu je nejprve potřeba předzpracovat všechny vstupní soubory (`okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
 
 Příklad spouštění:
 ```
 ./process_okcz.sh -p
 ```
 
-Při spuštění programu s parametrem `-m` dojde k vypsání názvů souborů (dokumentů z okcz_toc.xml), které obsahují nejvíce výskytů jmen. Názvy těchto souborů mohou být následně použity v dalších režimech programu pro získání relevantních informací. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uveden příslušný název souboru a ve druhém sloupci pak počet výskytů jmen osob v souboru.
+Při spuštění programu s parametrem `-m` dojde k vypsání názvů souborů (dokumentů z `okcz_toc.xml`), které obsahují nejvíce výskytů jmen. Názvy těchto souborů mohou být následně použity v dalších režimech programu pro získání relevantních informací. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uveden příslušný název souboru a ve druhém sloupci pak počet výskytů jmen osob v souboru.
 
 Příklad spouštění:
 ```
@@ -74,7 +76,7 @@ xx50876	881
 ...
 ```
 
-Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů export_mzk.mrc a export_nkp.mrc. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru okcz_toc.xml na identifikátory v souborech export_mzk.mrc a export_nkp.mrc není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
+Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů `export_mzk.mrc` a `export_nkp.mrc`. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru `okcz_toc.xml` na identifikátory v souborech `export_mzk.mrc` a `export_nkp.mrc` není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
 
 * `isbn` - marc pole `020` podpole `$a`, v obálkách `<ean13>`
 * `cbn` - marc pole `015` podpole `$a`, v obálkách `<cnb>`
@@ -84,82 +86,143 @@ Výstupem je knihovnický záznam/záznamy ve formátu MARC 21 odpovídající d
 
 Příklad spouštění:
 ```
-./process_okcz.sh -s xx133891
+./process_okcz.sh -s xx100724
 ```
 
 Příklad výstupu:
 ```
-nkc20061662268 LDR   L 00000nam a2200000 aa4500
-nkc20061662268 001   L nkc20061662268
-nkc20061662268 003   L CZ PrNK
-nkc20061662268 005   L 20130711142022.0
-nkc20061662268 007   L ta
-nkc20061662268 008   L 060630m20042006xr ac  e      001 0 cze  
-nkc20061662268 015   L $$acnb001662268
-nkc20061662268 020   L $$a80-7182-156-X$$q(1. díl :$$qOlomouc :$$qbrož.)
-nkc20061662268 020   L $$a80-7182-206-X$$q(2. díl :$$qOlomouc :$$qbrož.)
-nkc20061662268 035   L $$a(OCoLC)63295689
-nkc20061662268 040   L $$aABA001$$bcze
-nkc20061662268 043   L $$ae-xr---$$be-xr-ol$$2czenas
-nkc20061662268 072 7 L $$a82$$xLiteratura. Literární život$$2Konspekt$$911
-nkc20061662268 080   L $$a82-027.22$$2MRF
-nkc20061662268 080   L $$a82:316.3$$2MRF
-nkc20061662268 080   L $$a316.72/.75$$2MRF
-nkc20061662268 080   L $$a(437.325)$$2MRF
-nkc20061662268 080   L $$a(082)$$2MRF
-nkc20061662268 24500 L $$aZ paměti literární Olomouce :$$bsborník memoárů, statí a příležitostných textů /$$ceditor Bohumír Kolář
-nkc20061662268 250   L $$a1. vyd.
-nkc20061662268 260   L $$aOlomouc :$$bVlastivědná společnost muzejní,$$c2004-2006
-nkc20061662268 300   L $$a2 sv. (276, 446 s.) :$$bil., portréty ;$$c23 cm
-nkc20061662268 500   L $$aVydáno v Nakladatelství Olomouc
-nkc20061662268 504   L $$aObsahuje bibliografie, bibliografické odkazy a rejstřík
-nkc20061662268 65007 L $$aliterární život$$7ph122405$$zČesko$$2czenas
-nkc20061662268 65007 L $$aliteratura a společnost$$7ph122371$$zČesko$$2czenas
-nkc20061662268 65007 L $$akultura a společnost$$7ph122010$$zČesko$$2czenas
-nkc20061662268 65009 L $$aliterary life$$zCzechia$$2eczenas
-nkc20061662268 65009 L $$aliterature and society$$zCzechia$$2eczenas
-nkc20061662268 65009 L $$aculture and society$$zCzechia$$2eczenas
-nkc20061662268 655 7 L $$asborníky$$7fd163935$$2czenas
-nkc20061662268 655 9 L $$amiscellanea$$2eczenas
-nkc20061662268 651 7 L $$aOlomouc (Česko : oblast)$$7ge128534$$2czenas
-nkc20061662268 651 9 L $$aOlomouc Region (Czechia)$$2eczenas
-nkc20061662268 7001  L $$aKolář, Bohumír,$$d1932-$$7jn20020618008$$4edt
-nkc20061662268 9102  L $$aBOA001$$b2-1141.997$$s1-2$$tv
-nkc20061662268 9289  L $$aVlastivědná společnost muzejní Olomouc
-nkc20061662268 9289  L $$aNakladatelství Olomouc
-nkc20061662268 990   L $$aBK
-nkc20061662268 995   L $$a01
-nkc20061662268 991   L $$b200608$$cNOV
-nkc20061662268 9966  L $$b2610232750$$c2-1141.997$$d1. díl$$v1$$lMZK$$rSklad / do 1 hodiny$$n0$$pp.v.$$w000748629$$u000010$$a1$$eBOA001$$jMZK50$$sP
-nkc20061662268 9966  L $$b2610285709$$c2-1141.997$$d2. díl$$v2$$lMZK$$rSklad / do 1 hodiny$$n0$$pp.v.$$w000748629$$u000020$$a1$$eBOA001$$jMZK50$$sP
-nkc20061662268 9967  L $$b2610294111$$c2-1141.997$$d1. díl$$v1$$lVol.výběr$$rVV 1p$$n3$$pkup$$h821.162.3 KOL$$w000748629$$u000050$$a1$$eBOA001$$jMZK50$$sA
-nkc20061662268 9967  L $$b2610294112$$c2-1141.997$$d1. díl$$v1$$lVol.výběr$$rVV 1p$$n4$$pkup$$h821.162.3 KOL$$w000748629$$u000060$$a1$$eBOA001$$jMZK50$$sA
-nkc20061662268 9967  L $$b2610294113$$c2-1141.997$$d2. díl$$v2$$lVol.výběr$$rVV 1p$$n6$$pkup$$h821.162.3 KOL$$w000748629$$u000030$$a1$$eBOA001$$jMZK50$$sA
-nkc20061662268 9967  L $$b2610294114$$c2-1141.997$$d2. díl$$v2$$lVol.výběr$$rVV 1p$$n3$$pkup$$h821.162.3 KOL$$w000748629$$u000040$$a1$$eBOA001$$jMZK50$$sA
-nkc20061662268 OAI   L $$aMZK01-000748629
+=== ID zaznamu v souboru okcz_toc.xml ===
+116399657
+=== Odpovidajici ID zaznamu v souboru export_nkp.mrc ===
+zpk20142603114
+=== Odpovidajici zaznam v souboru export_nkp.mrc ===
+zpk20142603114 LDR   L 00000nam a2200000 a 4500
+zpk20142603114 001   L zpk20142603114
+zpk20142603114 003   L CZ PrNK
+zpk20142603114 005   L 20150409110403.0
+zpk20142603114 007   L ta
+zpk20142603114 008   L 150319s2013    ru ach e      000 0bruso 
+zpk20142603114 020   L $$a978-5-94881-227-4$$q(brož.)
+zpk20142603114 040   L $$aABA001$$bcze
+zpk20142603114 043   L $$ae-ru---
+zpk20142603114 045   L $$aw8x4
+zpk20142603114 072 7 L $$a75$$xMalířství$$2Konspekt$$921
+zpk20142603114 072 7 L $$a929$$xBiografie$$2Konspekt$$98
+zpk20142603114 080   L $$a75.071.1$$2MRF
+zpk20142603114 080   L $$a929$$2MRF
+zpk20142603114 080   L $$a75(470+571)$$2MRF
+zpk20142603114 080   L $$a75.036/.038$$2MRF
+zpk20142603114 080   L $$a(470+571)$$2MRF
+zpk20142603114 080   L $$a(092)$$2MRF
+zpk20142603114 1001  L $$aJevreinov, Nikolaj Nikolajevič,$$d1879-1953$$7js20020805712$$4aut
+zpk20142603114 24510 L $$aNesterov /$$cočerk N. N. Jevreinova
+zpk20142603114 260   L $$aMoskva :$$bNovyj chronograf,$$c2013
+zpk20142603114 300   L $$a82 s., xxx s. :$$bil., portréty, faksim. ;$$c18 cm
+zpk20142603114 500   L $$a2000 výt.
+zpk20142603114 500   L $$aNa tit. s. uvedeno původní nakl.: Peterburg : Tret'ja Straža, 1922
+zpk20142603114 504   L $$aObsahuje bibliografické odkazy
+zpk20142603114 60017 L $$aNesterov, Michail Vasil‘jevič,$$d1862-1942$$7jx20070528021$$2czenas
+zpk20142603114 648 4 L $$a1886-1942
+zpk20142603114 648 7 L $$a19.-20. století$$7ch757015$$2czenas
+zpk20142603114 65007 L $$amalíři$$7ph122596$$zRusko$$y19.-20. století$$2czenas
+zpk20142603114 65007 L $$aruské malířství$$7ph125341$$y19.-20. století$$2czenas
+zpk20142603114 65007 L $$amoderní malířství$$7ph122940$$zRusko$$2czenas
+zpk20142603114 655 7 L $$abiografie$$7fd131909$$2czenas
+zpk20142603114 910   L $$aABA001
+zpk20142603114 990   L $$aBK
+zpk20142603114 996   L $$b1002933199$$cG 211641$$lSKLAD V REKONSTRUKCI$$rsklad$$sN$$n5$$w002603892$$u000010$$jNKC50$$tABA001.NKC01002603114.NKC50002603892000010
+zpk20142603114 998   L $$ahttp://aleph.nkp.cz/F/?func=direct&doc_number=002603114&local_base=NKC
+zpk20142603114 OAI   L $$aNKC01-002603114
 ...
 ```
 
-Při spuštění programu s parametrem `-a` dojde pro danou knihu k vypsání nalezených jmen osob, která jsou doporučena k přidání do knihovnického záznamu. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Ze seznamu jmen jsou automaticky odstraněna jména, která se již v knihovnických záznamech, tedy v souborech export_mzk.mrc a export_nkp.mrc, vyskytují. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uvedeno jméno osoby a ve druhém sloupci její skóre.
+Při spuštění programu s parametrem `-a` dojde pro danou knihu k vypsání nalezených jmen osob, která jsou doporučena k přidání do knihovnického záznamu. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Ze seznamu jmen jsou automaticky odstraněna jména, která se již v knihovnických záznamech, tedy v souborech `export_mzk.mrc` a `export_nkp.mrc`, vyskytují. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uvedeno jméno osoby a ve druhém sloupci její skóre.
 
 Příklad spouštění:
 ```
-./process_okcz.sh -a xx133891
+./process_okcz.sh -a xx100912
 ```
 
 Příklad výstupu:
 ```
-Bohumír Kolář	28
-František Všetička	17
-Eliška Blažejová	6
-Bohuslav Smejkal	6
-Vladimíra Cetkovská	5
-Stanislav Komenda	4
-Ladislav Zelina	4
-František Valouch	4
-Vladimír Zicháček	3
-Pavel Marek	3
+=== Jmeno autora v souboru export_mzk.mrc ===
+Pavel Hlaváček
+=== Jmeno autora v souboru export_nkp.mrc ===
+Pavel Hlaváček
+=== Nejvyznamnejsi nalezena jmena ===
+Petr Jurek	2
+Jiří Zákravsky	2
+Linda Piknerovd	1
+David Sane	1
 ...
+```
+
+Při spuštění programu s parametrem `-x` dojde k hromadnemu zpracování všech záznamů z `okcz_toc.xml`. Jednotlivé výstupní soubory jsou ukládány do adresáře `final` a de facto obsahují pro každý záznam stejné informace, které se dají získat pomocí přepínačů `-s` a `-a`.
+
+Příklad spouštění:
+```
+./process_okcz.sh -x
+```
+
+Příklad výstupu (soubor `xx100912`):
+```
+=== ID zaznamu v souboru okcz_toc.xml ===
+116095671
+=== Odpovidajici ID zaznamu v souboru export_mzk.mrc ===
+nkc20152683385
+=== Odpovidajici ID zaznamu v souboru export_nkp.mrc ===
+nkc20152683385
+=== Odpovidajici zaznam v souboru export_mzk.mrc ===
+nkc20152683385 LDR   L 00000nam a2200000 a 4500
+nkc20152683385 001   L nkc20152683385
+nkc20152683385 003   L CZ PrNK
+nkc20152683385 005   L 20160129091627.0
+nkc20152683385 007   L ta
+nkc20152683385 008   L 150311s2014    xr     f      001 0 cze
+nkc20152683385 015   L $$acnb002683385
+nkc20152683385 020   L $$a978-80-7363-678-4$$q(brož.)
+nkc20152683385 035   L $$a(OCoLC)908821959
+nkc20152683385 040   L $$aOLA001$$bcze
+nkc20152683385 0410  L $$acze$$beng
+nkc20152683385 072 7 L $$a328$$xZastupitelské orgány. Vlády. Politické systémy jednotlivých zemí$$2Konspekt$$915
+nkc20152683385 080   L $$a342.5$$2MRF
+nkc20152683385 080   L $$a328/329$$2MRF
+nkc20152683385 080   L $$a(100=111)$$2MRF
+nkc20152683385 080   L $$a(048.8:082)$$2MRF
+nkc20152683385 080   L $$a(078.7)$$2MRF
+nkc20152683385 1001  L $$aHlaváček, Pavel,$$d1980-$$7js20061013003$$4aut
+nkc20152683385 24510 L $$aPolitické systémy anglosaských zemí /$$cPavel Hlaváček, Petr Jurek a kol.
+...
+=== Odpovidajici zaznam v souboru export_nkp.mrc ===
+nkc20152683385 LDR   L 00000nam a2200000 a 4500
+nkc20152683385 001   L nkc20152683385
+nkc20152683385 003   L CZ PrNK
+nkc20152683385 005   L 20160129091627.0
+nkc20152683385 007   L ta
+nkc20152683385 008   L 150311s2014    xr     f      001 0 cze
+nkc20152683385 015   L $$acnb002683385
+nkc20152683385 020   L $$a978-80-7363-678-4$$q(brož.)
+nkc20152683385 035   L $$a(OCoLC)908821959
+nkc20152683385 040   L $$aOLA001$$bcze
+nkc20152683385 0410  L $$acze$$beng
+nkc20152683385 072 7 L $$a328$$xZastupitelské orgány. Vlády. Politické systémy jednotlivých zemí$$2Konspekt$$915
+nkc20152683385 080   L $$a342.5$$2MRF
+nkc20152683385 080   L $$a328/329$$2MRF
+nkc20152683385 080   L $$a(100=111)$$2MRF
+nkc20152683385 080   L $$a(048.8:082)$$2MRF
+nkc20152683385 080   L $$a(078.7)$$2MRF
+nkc20152683385 1001  L $$aHlaváček, Pavel,$$d1980-$$7js20061013003$$4aut
+nkc20152683385 24510 L $$aPolitické systémy anglosaských zemí /$$cPavel Hlaváček, Petr Jurek a kol.
+...
+=== Jmeno autora v souboru export_mzk.mrc ===
+Pavel Hlaváček
+=== Jmeno autora v souboru export_nkp.mrc ===
+Pavel Hlaváček
+=== Nejvyznamnejsi nalezena jmena ===
+Petr Jurek      2
+Jiří Zákravsky  2
+Linda Piknerovd 1
+David Sane      1
 ```
 
 ## add_wiki_links.sh
