@@ -47,14 +47,14 @@ Shellový skript process_okcz.sh slouží k analýze dat z databáze obálek kni
 	-x Hromadne zpracovani vsech zaznamu z okcz_toc.xml.
 ```
 
-Při použití programu je nejprve potřeba předzpracovat všechny vstupní soubory (okcz_toc.xml, export_mzk.mrc a export_nkp.mrc). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
+Při použití programu je nejprve potřeba předzpracovat všechny vstupní soubory (`okcz_toc.xml`, `export_mzk.mrc` a `export_nkp.mrc`). Toto předzpracování se spouští parametrem `-p` a může trvat i několik hodin.
 
 Příklad spouštění:
 ```
 ./process_okcz.sh -p
 ```
 
-Při spuštění programu s parametrem `-m` dojde k vypsání názvů souborů (dokumentů z okcz_toc.xml), které obsahují nejvíce výskytů jmen. Názvy těchto souborů mohou být následně použity v dalších režimech programu pro získání relevantních informací. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uveden příslušný název souboru a ve druhém sloupci pak počet výskytů jmen osob v souboru.
+Při spuštění programu s parametrem `-m` dojde k vypsání názvů souborů (dokumentů z `okcz_toc.xml`), které obsahují nejvíce výskytů jmen. Názvy těchto souborů mohou být následně použity v dalších režimech programu pro získání relevantních informací. Výstupem je jednoduchý textový formát o dvou sloupcích, kde je v prvním sloupci uveden příslušný název souboru a ve druhém sloupci pak počet výskytů jmen osob v souboru.
 
 Příklad spouštění:
 ```
@@ -76,7 +76,7 @@ xx50876	881
 ...
 ```
 
-Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů export_mzk.mrc a export_nkp.mrc. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru okcz_toc.xml na identifikátory v souborech export_mzk.mrc a export_nkp.mrc není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
+Při spuštění programu s parametrem `-s` dojde k vypsání záznamů pro danou knihu ze souborů export_mzk.mrc a export_nkp.mrc. Jako parametr FILE_NAME je potřeba zadat jméno souboru získané pomocí parametru `-m`. Mapování identifikátorů uvedených v souboru `okcz_toc.xml` na identifikátory v souborech export_mzk.mrc a export_nkp.mrc není 100%, proto je možné, že daný záznam vypsán nebude. Mapování probíhá podle následujících pravidel.
 
 * `isbn` - marc pole `020` podpole `$a`, v obálkách `<ean13>`
 * `cbn` - marc pole `015` podpole `$a`, v obálkách `<cnb>`
