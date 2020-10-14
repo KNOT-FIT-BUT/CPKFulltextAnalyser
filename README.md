@@ -157,6 +157,74 @@ David Sane	1
 ...
 ```
 
+Při spuštění programu s parametrem `-x` dojde k hromadnemu zpracování všech záznamů z okcz_toc.xml. Jednotlivé výstupní soubory jsou ukládány do adresáře `final` a de facto obsahují pro každý záznam stejné informace, které se dají získat pomocí přepínačů `-s` a `-a`.
+
+Příklad spouštění:
+```
+./process_okcz.sh -x
+```
+
+Příklad výstupu (soubor `xx100912`):
+```
+=== ID zaznamu v souboru okcz_toc.xml ===
+116095671
+=== Odpovidajici ID zaznamu v souboru export_mzk.mrc ===
+nkc20152683385
+=== Odpovidajici ID zaznamu v souboru export_nkp.mrc ===
+nkc20152683385
+=== Odpovidajici zaznam v souboru export_mzk.mrc ===
+nkc20152683385 LDR   L 00000nam a2200000 a 4500
+nkc20152683385 001   L nkc20152683385
+nkc20152683385 003   L CZ PrNK
+nkc20152683385 005   L 20160129091627.0
+nkc20152683385 007   L ta
+nkc20152683385 008   L 150311s2014    xr     f      001 0 cze
+nkc20152683385 015   L $$acnb002683385
+nkc20152683385 020   L $$a978-80-7363-678-4$$q(brož.)
+nkc20152683385 035   L $$a(OCoLC)908821959
+nkc20152683385 040   L $$aOLA001$$bcze
+nkc20152683385 0410  L $$acze$$beng
+nkc20152683385 072 7 L $$a328$$xZastupitelské orgány. Vlády. Politické systémy jednotlivých zemí$$2Konspekt$$915
+nkc20152683385 080   L $$a342.5$$2MRF
+nkc20152683385 080   L $$a328/329$$2MRF
+nkc20152683385 080   L $$a(100=111)$$2MRF
+nkc20152683385 080   L $$a(048.8:082)$$2MRF
+nkc20152683385 080   L $$a(078.7)$$2MRF
+nkc20152683385 1001  L $$aHlaváček, Pavel,$$d1980-$$7js20061013003$$4aut
+nkc20152683385 24510 L $$aPolitické systémy anglosaských zemí /$$cPavel Hlaváček, Petr Jurek a kol.
+...
+=== Odpovidajici zaznam v souboru export_nkp.mrc ===
+nkc20152683385 LDR   L 00000nam a2200000 a 4500
+nkc20152683385 001   L nkc20152683385
+nkc20152683385 003   L CZ PrNK
+nkc20152683385 005   L 20160129091627.0
+nkc20152683385 007   L ta
+nkc20152683385 008   L 150311s2014    xr     f      001 0 cze
+nkc20152683385 015   L $$acnb002683385
+nkc20152683385 020   L $$a978-80-7363-678-4$$q(brož.)
+nkc20152683385 035   L $$a(OCoLC)908821959
+nkc20152683385 040   L $$aOLA001$$bcze
+nkc20152683385 0410  L $$acze$$beng
+nkc20152683385 072 7 L $$a328$$xZastupitelské orgány. Vlády. Politické systémy jednotlivých zemí$$2Konspekt$$915
+nkc20152683385 080   L $$a342.5$$2MRF
+nkc20152683385 080   L $$a328/329$$2MRF
+nkc20152683385 080   L $$a(100=111)$$2MRF
+nkc20152683385 080   L $$a(048.8:082)$$2MRF
+nkc20152683385 080   L $$a(078.7)$$2MRF
+nkc20152683385 1001  L $$aHlaváček, Pavel,$$d1980-$$7js20061013003$$4aut
+nkc20152683385 24510 L $$aPolitické systémy anglosaských zemí /$$cPavel Hlaváček, Petr Jurek a kol.
+...
+=== Jmeno autora v souboru export_mzk.mrc ===
+Pavel Hlaváček
+=== Jmeno autora v souboru export_nkp.mrc ===
+Pavel Hlaváček
+=== Nejvyznamnejsi nalezena jmena ===
+Petr Jurek      2
+Jiří Zákravsky  2
+Linda Piknerovd 1
+David Sane      1
+```
+
 ## add_wiki_links.sh
 
 Spouští přiřazování URL z wikipedie k záznamům národních autorit.
