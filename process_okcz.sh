@@ -28,12 +28,14 @@ process_all_data () {
 
 	cat list | while read -r line; do
 		declare -A FILE_NAMES
+		declare AUTHOR
 		get_local_ids $line
 		print_ids "$line" > final/"$line"
 		print_records "$line" >> final/"$line"
 		print_author "$line" >> final/"$line"
 		analyze_book "$line" >> final/"$line"
 		unset FILE_NAMES
+		unset AUTHOR
 	done
 }
 
@@ -171,7 +173,8 @@ print_author () {
 analyze_book () {
 	echo "=== Nejvyznamnejsi nalezena jmena ==="
 	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' | sort -u > tmp_grep_$1
-	grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+	grep -E -o -f tmp_grep_$1 "split/$1" | grep -v "^$AUTHOR" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+#	grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
 	rm tmp_grep_$1
 }
 
@@ -214,10 +217,12 @@ do
 			;;
 		a)
 			declare -A FILE_NAMES
+			declare AUTHOR
 			get_local_ids "$OPTARG"
 			print_author "$OPTARG"
 			analyze_book "$OPTARG"
 			unset FILE_NAMES
+			unset AUTHOR
 			;;
 		r)
 			rm list
