@@ -193,9 +193,9 @@ analyze_book () {
 
 	if [ "$AUTHOR" ];
 	then
-		grep -E -o -f tmp_grep_$1 "split/$1" | grep -v "^$AUTHOR" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+		grep -E -o -f tmp_grep_$1 "processed/$1" | grep -v "^$AUTHOR" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
 	else
-		grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+		grep -E -o -f tmp_grep_$1 "processed/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
 	fi
 
 	rm tmp_grep_$1
