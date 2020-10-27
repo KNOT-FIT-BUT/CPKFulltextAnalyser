@@ -187,9 +187,17 @@ print_author () {
 
 analyze_book () {
 	echo "=== Nejvyznamnejsi nalezena jmena ==="
-	grep -o -f names "split/$1" | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' | sort -u > tmp_grep_$1
-	grep -E -o -f tmp_grep_$1 "split/$1" | grep -v "^$AUTHOR" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
-#	grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+
+	OCC_FILE=`cut -c 3 <<< $1`
+	grep "$1:" "occurences$OCC_FILE" | cut -f2 -d: | LC_ALL=C sort -u | sed 's/$/\( [[:upper:]][[:lower:]]+| [[:upper:]]\\.\)\{1,2\}/g' > tmp_grep_$1
+
+	if [ "$AUTHOR" ];
+	then
+		grep -E -o -f tmp_grep_$1 "split/$1" | grep -v "^$AUTHOR" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+	else
+		grep -E -o -f tmp_grep_$1 "split/$1" | LC_ALL=C sort | LC_ALL=C uniq -c | sort -nr | sed -e 's/^[[:blank:]]*\([[:digit:]]*\)[[:blank:]]\([[:alnum:] \.]*\)/\2\t\1/'
+	fi
+
 	rm tmp_grep_$1
 }
 
