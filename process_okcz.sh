@@ -174,7 +174,7 @@ print_records () {
 print_author () {
 	for KEY in "${!FILE_NAMES[@]}"
 	do	
-		AUTHOR=`grep "^${FILE_NAMES[$KEY]}" $KEY | grep -P "^[^\s]*\s(100)" | sed -e 's/^.*\s100[0-9]\?\s*L\s\$\$a\([[:alpha:] ,]*\)\$\$.*/\1/g' | sed 's/,$//' | sed -e 's/\([[:alpha:]]*\), \([[:alpha:]]*\)/\2 \1/'`
+		AUTHOR=`grep "^${FILE_NAMES[$KEY]}" $KEY | grep -P "^[^\s]*\s(100)" | sed -e 's/^.*\s100[0-9]\?\s*L\s\$\$a\([^$]*\)\$\$.*/\1/g' | sed 's/,$//' | sed -e 's/\([^$ ,]*\), \(.*\)/\2 \1/'`
 		if [ ! -z "$AUTHOR" ];
 		then
 			echo "=== Jmeno autora v souboru $KEY ==="
